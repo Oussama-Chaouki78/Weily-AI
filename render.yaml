@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: weily-ai-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn netsuite_ai_server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: NETSUITE_ACCOUNT_ID
+        sync: false
+      - key: NETSUITE_CONSUMER_KEY
+        sync: false
+      - key: NETSUITE_CONSUMER_SECRET
+        sync: false
+      - key: NETSUITE_TOKEN_ID
+        sync: false
+      - key: NETSUITE_TOKEN_SECRET
+        sync: false
