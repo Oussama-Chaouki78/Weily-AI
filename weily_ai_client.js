@@ -6,7 +6,7 @@
 
 define(['N/https', 'N/ui/dialog'], function(https, dialog) {
     
-    const BACKEND_URL = 'https://your-render-app.onrender.com'; // Your Render URL
+    const BACKEND_URL = 'https://weily-ai.onrender.com';
     
     let recognition = null;
     let isListening = false;
