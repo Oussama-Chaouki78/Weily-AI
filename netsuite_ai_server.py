@@ -36,11 +36,13 @@ except Exception as e:
     logger.error(f"❌ OpenAI error: {e}")
     openai_client = None
 
-# NetSuite Suitelet URL
+# NetSuite Suitelet URL and API Key
 SUITELET_URL = os.getenv('NETSUITE_SUITELET_URL', '').strip()
+SUITELET_API_KEY = os.getenv('NETSUITE_SUITELET_API_KEY', 'weily_secret_key_2024').strip()
 
 if SUITELET_URL:
     logger.info(f"✅ Suitelet URL: {SUITELET_URL}")
+    logger.info(f"✅ API Key configured: {SUITELET_API_KEY[:8]}...")
 else:
     logger.warning("⚠️ NETSUITE_SUITELET_URL not configured")
 
@@ -79,7 +81,8 @@ def execute_suiteql_via_suitelet(sql_query: str, limit: int = 1000) -> Optional[
             SUITELET_URL,
             headers={
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'X-API-Key': SUITELET_API_KEY  # Add API key
             },
             json=payload,
             timeout=30
