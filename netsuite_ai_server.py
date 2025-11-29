@@ -129,15 +129,15 @@ def execute_suiteql(query: str, limit: int = 1000) -> Optional[Dict]:
         logger.error("❌ NetSuite config invalid")
         return None
     
-    url = f"{NETSUITE_CONFIG['base_url']}/services/rest/query/v1/suiteql"
+    url = f"{NETSUITE_CONFIG['base_url']}/services/rest/query/v1/suiteql?limit={limit}"
     headers = {
         'Content-Type': 'application/json',
         'prefer': 'transient',
         'Authorization': generate_oauth_header(url, 'POST')
     }
     
-    if 'LIMIT' not in query.upper():
-        query = f"{query} LIMIT {limit}"
+    # Remove any LIMIT clause from query - we use URL parameter instead
+    query = query.replace('LIMIT 1000', '').replace('LIMIT 100', '').strip()
     
     try:
         logger.info(f"🔍 Executing SuiteQL: {query[:150]}...")
@@ -365,7 +365,6 @@ def get_smart_sql(query_type: str, params: Dict) -> Optional[str]:
             AND t.status NOT IN ('Voided', 'Cancelled', 'Closed')
             GROUP BY c.companyname, t.currency
             ORDER BY total_sales DESC
-            LIMIT {limit}
         """
     
     return None
